@@ -29,10 +29,15 @@ export class ApiUsersService {
     return this.http.post<any>(direction, form).pipe(catchError(this.handleError))
   }
 
-
   //! Get users
   getUsers(): Observable<any> {
     let direction: string = this.url + 'users'
+    return this.http.get<any>(direction).pipe(catchError(this.handleError))
+  }
+
+  //! Put one
+  checkUserName(username: string): Observable<any> {
+    let direction = this.url + 'users/available/' + username
     return this.http.get<any>(direction).pipe(catchError(this.handleError))
   }
 }

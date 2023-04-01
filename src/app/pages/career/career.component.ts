@@ -51,8 +51,6 @@ export class CareerComponent {
   getAll(){
     this.api.getCareer().subscribe(data => {
       this.careers = data.result
-      console.log(data);
-
     })
   }
 
@@ -71,7 +69,6 @@ export class CareerComponent {
       this.nDuration.nativeElement.value = ''
     })
   }
-
   putOne() {
     const career: Career = {
       id: this.eId.nativeElement.value,
