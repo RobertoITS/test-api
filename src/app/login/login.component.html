@@ -1,0 +1,9 @@
+<div class="mb-3">
+  <label for="user" class="form-label">Username</label>
+  <input #username type="text" class="form-control" id="user" placeholder="name@example.com">
+</div>
+<div class="mb-3">
+  <label for="pass" class="form-label">Password</label>
+  <input #pass type="password" class="form-control" id="pass" placeholder="123456">
+</div>
+<button type="button"(click)="login()" class="btn btn-primary">Login</button>
