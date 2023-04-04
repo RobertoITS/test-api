@@ -1,8 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Login } from '../models/login.model';
-import { ApiService } from '../services/api.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { ApiUsersService } from '../services/api.users.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +15,7 @@ export class LoginComponent {
   @ViewChild('username') username!: ElementRef<HTMLInputElement>
   @ViewChild('pass') pass!: ElementRef<HTMLInputElement>
 
-  constructor(private api: ApiService, private cookieService: CookieService, private router: Router) {}
+  constructor(private api: ApiUsersService, private cookieService: CookieService, private router: Router) {}
 
   //! Funcion del LOGIN
   login() {

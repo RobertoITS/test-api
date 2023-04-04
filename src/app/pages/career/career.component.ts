@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ApiService } from '../services/api.service';
-import { Career } from '../models/career.model';
+import { Career } from '../../models/career.model';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { ApiCareerService } from 'src/app/services/api.career.service';
 
 @Component({
   selector: 'app-career',
@@ -25,18 +26,33 @@ export class CareerComponent {
   description: string =''
   duration: string = ''
 
+  //! Search
+  @ViewChild('searchI') searchI!: ElementRef<HTMLInputElement>
+
+  //* Data refresh
+  subscription!: Subscription
 
   careers: any[] = []
 
-  constructor(private api: ApiService){}
+  constructor(private api: ApiCareerService){}
 
   ngOnInit(){
+    //* Obtenemos todos los datos
     this.getAll()
+
+    //* Refrescamos la vista:
+    this.subscription = this.api.refresh$.subscribe(() => {
+      this.api.getCareer().subscribe((data) => {
+        this.careers = data.result
+      })
+    })
   }
 
   getAll(){
     this.api.getCareer().subscribe(data => {
       this.careers = data.result
+      console.log(data);
+
     })
   }
 
@@ -50,6 +66,9 @@ export class CareerComponent {
     this.api.postCareer(object).subscribe(data => {
       console.log(data);
       this.nClose.nativeElement.click()
+      this.nName.nativeElement.value = ''
+      this.nDescription.nativeElement.value = ''
+      this.nDuration.nativeElement.value = ''
     })
   }
 
@@ -74,6 +93,17 @@ export class CareerComponent {
       })
     } else {
       this.eClose.nativeElement.click()
+    }
+  }
+  getOneByParameters(){
+    this.api.searchOneByParameters(this.searchI.nativeElement.value).subscribe((data) => {
+      this.careers = data.result
+    })
+  }
+  //* captura los cambios en el input
+  onKey(value: string) {
+    if(value == '' || value == null){
+      this.getAll()
     }
   }
 

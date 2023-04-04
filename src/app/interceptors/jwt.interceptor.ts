@@ -15,7 +15,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     //! Encabezado de AUTORIZACION para obtener datos!!
-    const token: string = this.cookieService.get('x-toen') //* Obtenemos el token
+    const token: string = this.cookieService.get('x-token') //* Obtenemos el token
     let req = request
     if(token){
       req = request.clone({ //* Agregamos el token en el header para usar en la API
