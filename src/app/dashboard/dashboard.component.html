@@ -1,14 +1,16 @@
-<div class="col">
-  <div class="row">
-    <button type="button" [routerLink]="'/career'" class="btn btn-primary mt-4">Career</button>
-  </div>
-  <div class="row">
-    <button type="button" [routerLink]="'/materia'" class="btn btn-primary mt-4">Materia</button>
-  </div>
-  <div class="row">
-    <button type="button" [routerLink]="'/commission'" class="btn btn-primary mt-4">Commission</button>
-  </div>
-  <div class="row">
-    <button type="button" [routerLink]="'/users'" class="btn btn-primary mt-4">Users</button>
+<div class="container">
+  <div class="col">
+    <div class="row">
+      <button *appRolePermissions="['ADMIN', 'SUSER']" type="button" [routerLink]="'/career'" class="btn btn-primary mt-4">Career</button>
+    </div>
+    <div class="row">
+      <button type="button" *appRolePermissions="['ADMIN', 'SUSER', 'TEACHER']" [routerLink]="'/materia'" class="btn btn-primary mt-4">Materia</button>
+    </div>
+    <div class="row">
+      <button type="button" *appRolePermissions="['ADMIN', 'SUSER', 'TEACHER', 'STUDENT']" [routerLink]="'/commission'" class="btn btn-primary mt-4">Commission</button>
+    </div>
+    <div class="row">
+      <button type="button" *appRolePermissions="['ADMIN', 'SUSER']" [routerLink]="'/users'" class="btn btn-primary mt-4">Users</button>
+    </div>
   </div>
 </div>

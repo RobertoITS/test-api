@@ -6,14 +6,16 @@ import { CareerComponent } from './pages/career/career.component';
 import { MateriaComponent } from './pages/materia/materia.component';
 import { CommissionComponent } from './pages/commission/commission.component';
 import { UsersComponent } from './pages/users/users.component';
+import { AuthGuard } from './guard/auth.guard';
+import { PermissionsGuard } from './guard/permissions.guard';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'career', component: CareerComponent },
-  { path: 'materia', component: MateriaComponent },
-  { path: 'commission', component: CommissionComponent },
-  { path: 'users', component: UsersComponent }
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'career', component: CareerComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER'] } },
+  { path: 'materia', component: MateriaComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER', 'TEACHER'] } },
+  { path: 'commission', component: CommissionComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER', 'TEACHER', 'STUDENT'] } },
+  { path: 'users', component: UsersComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER'] } }
 ];
 
 @NgModule({

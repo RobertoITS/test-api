@@ -8,12 +8,14 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { PagesModule } from './pages/pages.module';
+import { RolePermissionsDirective } from './directive/role.permissions.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    RolePermissionsDirective
   ],
   imports: [
     BrowserModule,

@@ -65,7 +65,6 @@
             </div>
           </div>
         </div>
-
       </div>
       <div class="modal-footer">
         <button #eClose type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -96,13 +95,13 @@
             </div>
             <div class="row">
               <!--! Check disponibilidad del usuario -->
-              <input #nCuil class="form-control form-control-sm mt-3" type="text" placeholder="CUIL" aria-label=".form-control-sm example" [value]="cuil">
-              <div class="form-text text-muted" #checked>
+              <input #nCuil class="form-control form-control-sm mt-3" (focus)="resetCuil()" (focusout)="onCheckCuil(nCuil.value)" type="text" placeholder="CUIL" aria-label=".form-control-sm example"  >
+              <div class="form-text text-muted" #checkedCuil>
                 Check availability
               </div>
             </div>
             <div class="row">
-              <input #nDir class="form-control form-control-sm mt-3" type="text" placeholder="Direction" aria-label=".form-control-sm example" >
+              <input #nDir class="form-control form-control-sm mt-1" type="text" placeholder="Direction" aria-label=".form-control-sm example" >
             </div>
             <div class="row">
               <input #nPhone class="form-control form-control-sm mt-3" type="text" placeholder="Phone" aria-label=".form-control-sm example" >
@@ -117,10 +116,14 @@
               <input #nEmail class="form-control form-control-sm mt-3" type="text" placeholder="Email" aria-label=".form-control-sm example" >
             </div>
             <div class="row">
-              <input #nUserName class="form-control form-control-sm mt-3" type="text" placeholder="User name" aria-label=".form-control-sm example" >
+              <!--! Check disponibilidad del usuario -->
+              <input #nUserName class="form-control form-control-sm mt-3" (focus)="resetUser()" (focusout)="onCheckUser(nUserName.value)" type="text" placeholder="User name" aria-label=".form-control-sm example">
+              <div class="form-text text-muted" #checkedUser>
+                Check availability
+              </div>
             </div>
             <div class="row">
-              <input #nPass class="form-control form-control-sm mt-3" type="text" placeholder="Password" aria-label=".form-control-sm example" >
+              <input #nPass class="form-control form-control-sm mt-1" type="text" placeholder="Password" aria-label=".form-control-sm example" >
             </div>
             <div class="row">
               <input #nRole class="form-control form-control-sm mt-3" type="text" placeholder="Role" aria-label=".form-control-sm example" >
@@ -132,7 +135,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button #nClose type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button #nClose type="button" class="btn btn-secondary" (click)="resetValues(); resetUser(); resetCuil()" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="postOne()">Post</button>
       </div>
     </div>
