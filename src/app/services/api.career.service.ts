@@ -62,4 +62,8 @@ export class ApiCareerService {
       let direction: string = this.url + 'careers/' + parameter
       return this.http.get<any>(direction).pipe(catchError(this.handleError))
     }
+    getOneCareer(id: string): Observable<any> {
+      let direction = this.url + 'career/' + id
+      return this.http.get<any>(direction).pipe(catchError(this.handleError))
+    }
 }

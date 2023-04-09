@@ -35,7 +35,11 @@ export class ApiUsersService {
     return this.http.get<any>(direction).pipe(catchError(this.handleError))
   }
   searchOneByParameters(value: string): Observable<any> {
-    let direction = this.url + 'users/' + value
+    let direction = this.url + 'users/parameters/' + value
+    return this.http.get(direction).pipe(catchError(this.handleError))
+  }
+  getOneUser(id: string): Observable<any> {
+    let direction = this.url + 'users/' + id
     return this.http.get(direction).pipe(catchError(this.handleError))
   }
 
@@ -60,8 +64,14 @@ export class ApiUsersService {
   }
 
   //! Delete one
-  deleteOne(id: string){
+  deleteOne(id: string): Observable<any>{
     let direction = this.url + 'users/' + id
-    return this.http.delete(direction).pipe(catchError(this.handleError), tap(() => { this._refresh$.next() }))
+    return this.http.delete<any>(direction).pipe(catchError(this.handleError), tap(() => { this._refresh$.next() }))
+  }
+
+  //! Get teachers
+  getTeachers(): Observable<any> {
+    let direction = this.url + 'teachers/'
+    return this.http.get<any>(direction).pipe(catchError(this.handleError))
   }
 }

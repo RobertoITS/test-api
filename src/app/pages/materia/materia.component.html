@@ -1,1 +1,142 @@
-<p>materia works!</p>
+<div class="container mt-3">
+  <div class="input-group mb-3">
+    <!--! Captura los cambios del input -->
+    <input #searchI (keyup)="onKey(searchI.value)" type="text" class="form-control" placeholder="Value" aria-label="Value" aria-describedby="basic-addon2">
+    <div class="input-group-append">
+      <button (click)="getOneByParameters()" class="btn btn-outline-secondary" type="button">Button</button>
+    </div>
+  </div>
+</div>
+<div class="container mt-5">
+  <div class="list-group" >
+    <a (click)="changeValues(materia)" *ngFor="let materia of materias" data-bs-toggle="modal" data-bs-target="#edit" class="list-group-item list-group-item-action" aria-current="true">{{materia.name}}</a>
+  </div>
+</div>
+
+<!-- Modal View / Edit -->
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editLabel">Materia</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="col">
+            <div class="row">
+              <input #eId class="form-control form-control-sm" type="text" placeholder="Disabled input" aria-label="Disabled input example" disabled [value]="id">
+            </div>
+            <div class="row">
+              <input #eName class="form-control form-control-sm mt-3" type="text" placeholder="Name" aria-label=".form-control-sm example" [value]="name">
+            </div>
+            <div class="row">
+              <select #eProfessor class="form-select form-select-sm mt-3" id="e_professor" [value]="professor">
+                <option *ngFor="let teacher of teachers" value="{{teacher.id}}">{{teacher.name}} {{teacher.last_name}}</option>
+              </select>
+            </div>
+            <div class="row">
+              <input #eActualYear class="form-control form-control-sm mt-3" type="text" placeholder="Actual year" aria-label=".form-control-sm example" [value]="actual_year">
+            </div>
+            <div class="row">
+              <input #eClassesQuantity class="form-control form-control-sm mt-3" type="text" placeholder="Classes quantity" aria-label=".form-control-sm example" [value]="classes_quantity">
+            </div>
+            <div class="row">
+              <select #eCareer class="form-select form-select-sm mt-3" id="e_career" [value]="career">
+                <option *ngFor="let career of careers" value="{{career.id}}">{{career.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button #eClose type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="deleteOne()" >Delete</button>
+        <button type="button" class="btn btn-primary" (click)="putOne()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal New -->
+<div class="modal fade" id="new" tabindex="-1" aria-labelledby="newLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="newLabel">Materia</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="col">
+            <div class="row">
+              <input #nName class="form-control form-control-sm" type="text" placeholder="Name" aria-label=".form-control-sm example">
+            </div>
+            <div class="row">
+              <select #nProfessor class="form-select form-select-sm mt-3" id="professor">
+                <option selected value="">Professor...</option>
+                <option *ngFor="let teacher of teachers" value="{{teacher.id}}">{{teacher.name}} {{teacher.last_name}}</option>
+              </select>
+            </div>
+            <div class="row">
+              <input #nActualYear class="form-control form-control-sm mt-3" type="text" placeholder="Actual year" aria-label=".form-control-sm example">
+            </div>
+            <div class="row">
+              <input #nClassesQuantity class="form-control form-control-sm mt-3" type="text" placeholder="Classes quantity" aria-label=".form-control-sm example">
+            </div>
+            <div class="row">
+              <select #nCareer class="form-select form-select-sm mt-3" id="career">
+                <option selected value="">Career...</option>
+                <option *ngFor="let career of careers" value="{{career.id}}">{{career.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button #nClose type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="postOne()">Post</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Float button principal, se muestra en toda la pagina.-->
+<div class="btn-group-fab" role="group" aria-label="FAB Menu">
+  <div>
+    <button data-bs-toggle="modal" data-bs-target="#new" id="float" type="button" class="btn btn-main btn-success has-tooltip" data-placement="left" title="Menu"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+  </div>
+</div>
+
+<style>
+  .btn-group-fab {
+    position: fixed;
+    width: 50px;
+    height: auto;
+    right: 20px; bottom: 20px;
+
+  }
+  .btn-group-fab div {
+    position: relative; width: 100%;
+    height: auto;
+
+  }
+  .btn-group-fab .btn {
+    position: absolute;
+    bottom: 0;
+    border-radius: 50%;
+    display: block;
+    margin-bottom: 4px;
+    width: 40px; height: 40px;
+    margin: 4px auto;
+    box-shadow: 15px 6px 27px -9px rgba(0,0,0,0.75);
+  }
+  .btn-group-fab .btn-main {
+    width: 50px; height: 50px;
+    right: 50%; margin-right: -25px;
+    z-index: 9;
+
+  }
+</style>

@@ -6,8 +6,8 @@ import { CareerComponent } from './pages/career/career.component';
 import { MateriaComponent } from './pages/materia/materia.component';
 import { CommissionComponent } from './pages/commission/commission.component';
 import { UsersComponent } from './pages/users/users.component';
-import { AuthGuard } from './guard/auth.guard';
-import { PermissionsGuard } from './guard/permissions.guard';
+import { AuthGuard } from './middleware/guard/auth.guard';
+import { PermissionsGuard } from './middleware/guard/permissions.guard';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
