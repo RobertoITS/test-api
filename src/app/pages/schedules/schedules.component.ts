@@ -1,9 +1,12 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Materia } from 'src/app/models/materia.model';
+import { Schedules } from 'src/app/models/schedules.model';
 import { ApiCareerService } from 'src/app/services/api.career.service';
 import { ApiMateriaService } from 'src/app/services/api.materia.service';
+import { ApiSchedulesService } from 'src/app/services/api.schedules.service';
 import { ApiUsersService } from 'src/app/services/api.users.service';
+import * as bootstrap from 'bootstrap'
 
 @Component({
   selector: 'app-schedules',
@@ -15,6 +18,7 @@ export class SchedulesComponent {
   subscription!: Subscription
 
   constructor(
+      private apiSchedules: ApiSchedulesService,
       private apiCareers: ApiCareerService,
       private apiTeachers: ApiUsersService,
       private apiMateria: ApiMateriaService
@@ -22,7 +26,11 @@ export class SchedulesComponent {
 
   modalNew!: HTMLElement
 
+  message!: HTMLElement
+
   ngAfterViewInit(){
+    this.message = document.getElementById('message')!
+
     this.modalNew = document.getElementById('new')!
     this.modalNew?.addEventListener('hidden.bs.modal', e => {
       this.resetValues()
@@ -46,11 +54,8 @@ export class SchedulesComponent {
   }
 
   resetValues() {
-    this.nName.nativeElement.value = ''
-    this.nProfessor.nativeElement.value = ''
-    this.nActualYear.nativeElement.value = ''
-    this.nClassesQuantity.nativeElement.value = ''
-    this.nCareer.nativeElement.value = ''
+    this.nDay.nativeElement.value = ''
+    this.nSchedule.nativeElement.value = ''
   }
 
   changeValues(object: any) {
@@ -89,34 +94,29 @@ export class SchedulesComponent {
   //! ------------------ GET SECTION ------------------ !//
 
   //! ------------------ POST SECTION ------------------ !//
-  @ViewChild('nName') nName!: ElementRef<HTMLInputElement>
-  @ViewChild('nProfessor') nProfessor!: ElementRef<HTMLSelectElement>
-  @ViewChild('nActualYear') nActualYear!: ElementRef<HTMLInputElement>
-  @ViewChild('nClassesQuantity') nClassesQuantity!: ElementRef<HTMLInputElement>
-  @ViewChild('nCareer') nCareer!: ElementRef<HTMLInputElement>
+  @ViewChild('nDay') nDay!: ElementRef<HTMLSelectElement>
+  @ViewChild('nSchedule') nSchedule!: ElementRef<HTMLSelectElement>
   @ViewChild('nClose') nClose!: ElementRef<HTMLButtonElement>
-
+  messageAlert = ''
   postOne() {
-    const object: Materia = {
-      id: '',
-      name: this.nName.nativeElement.value,
-      professor_id: +this.nProfessor.nativeElement.value,
-      actual_year: this.nActualYear.nativeElement.value,
-      classes_quantity: +this.nClassesQuantity.nativeElement.value,
-      career_id: +this.nCareer.nativeElement.value
+    const object: Schedules = {
+      id: +(this.nDay.nativeElement.value + this.nSchedule.nativeElement.value),
+      class_day: this.nDay.nativeElement.options[this.nDay.nativeElement.selectedIndex].text,
+      class_schedule: this.nSchedule.nativeElement.options[this.nSchedule.nativeElement.selectedIndex].text,
     }
-
-    this.apiMateria.postOne(object).subscribe({
+    this.apiSchedules.postOne(object).subscribe({
       next: data => {
-        console.log(data);
+        console.log(data)
         this.nClose.nativeElement.click()
-        this.nName.nativeElement.value = ''
-        this.nProfessor.nativeElement.value = ''
-        this.nActualYear.nativeElement.value = ''
-        this.nClassesQuantity.nativeElement.value = ''
-        this.nCareer.nativeElement.value = ''
       },
-      error: error => { console.log(error) }
+      error: error => {
+        console.log(error.error.e.code)
+        if(error.error.e.code == 'ER_DUP_ENTRY'){
+          this.messageAlert = 'Duplicated entry'
+          const toast = bootstrap.Toast.getOrCreateInstance(this.message)
+          toast.show()
+        }
+      }
     })
   }
   //! ------------------ POST SECTION ------------------ !//

@@ -71,31 +71,27 @@
         <div class="container">
           <div class="col">
             <div class="row">
-              <input #nName class="form-control form-control-sm" type="text" placeholder="Name" aria-label=".form-control-sm example">
-            </div>
-            <div class="row">
-              <select #nProfessor class="form-select form-select-sm mt-3" id="professor">
-                <option selected value="">Professor...</option>
-                <option *ngFor="let teacher of teachers" value="{{teacher.id}}">{{teacher.name}} {{teacher.last_name}}</option>
+              <select #nDay class="form-select form-select-sm mt-3" id="day">
+                <option selected value="">Select day...</option>
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
               </select>
             </div>
             <div class="row">
-              <input #nActualYear class="form-control form-control-sm mt-3" type="text" placeholder="Actual year" aria-label=".form-control-sm example">
-            </div>
-            <div class="row">
-              <input #nClassesQuantity class="form-control form-control-sm mt-3" type="text" placeholder="Classes quantity" aria-label=".form-control-sm example">
-            </div>
-            <div class="row">
-              <select #nCareer class="form-select form-select-sm mt-3" id="career">
-                <option selected value="">Career...</option>
-                <option *ngFor="let career of careers" value="{{career.id}}">{{career.name}}</option>
+              <select #nSchedule class="form-select form-select-sm mt-3" id="hours">
+                <option selected value="">Select hours...</option>
+                <option value="1">19:00 pm to 21:00 pm</option>
+                <option value="2">21:00 pm to 23:00 pm</option>
               </select>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button #nClose type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button #nClose type="button" (click)="resetValues()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="postOne()">Post</button>
       </div>
     </div>
@@ -109,6 +105,18 @@
   </div>
 </div>
 
+<div class="toast-container  position-fixed bottom-0 start-50 translate-middle-x p-3">
+  <div id="message" class="toast text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+
+      <strong class="me-auto">Error!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ messageAlert }}
+    </div>
+  </div>
+</div>
 <style>
   .btn-group-fab {
     position: fixed;
