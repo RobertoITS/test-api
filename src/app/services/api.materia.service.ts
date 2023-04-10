@@ -33,4 +33,22 @@ export class ApiMateriaService {
     let direction = this.url + 'materia/'
     return this.http.post<any>(direction, object).pipe(catchError(this.handleError), tap(() => { this._refresh$.next() }))
   }
+
+  //! PUT ONE
+  putOne(object: any): Observable<any> {
+    let direction = this.url + 'materia/' + object.id
+    return this.http.put<any>(direction, object).pipe(catchError(this.handleError), tap(() => { this._refresh$.next() }))
+  }
+
+  //! GET ONE BY PARAMETER
+  getOneByParameter(param: string): Observable<any> {
+    let direction = this.url + 'materia/parameter/' + param
+    return this.http.get(direction).pipe(catchError(this.handleError))
+  }
+
+  //! DELETE ONE
+  deleteOne(id: string): Observable<any> {
+    let direction = this.url + 'materia/' + id
+    return this.http.delete<any>(direction).pipe(catchError(this.handleError), tap(() => { this._refresh$.next() }))
+  }
 }

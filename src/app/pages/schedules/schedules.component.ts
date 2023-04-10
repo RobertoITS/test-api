@@ -6,11 +6,11 @@ import { ApiMateriaService } from 'src/app/services/api.materia.service';
 import { ApiUsersService } from 'src/app/services/api.users.service';
 
 @Component({
-  selector: 'app-materia',
-  templateUrl: './materia.component.html',
-  styleUrls: ['./materia.component.css']
+  selector: 'app-schedules',
+  templateUrl: './schedules.component.html',
+  styleUrls: ['./schedules.component.css']
 })
-export class MateriaComponent {
+export class SchedulesComponent {
   //* Data refresh
   subscription!: Subscription
 

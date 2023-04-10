@@ -1,25 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CareerComponent } from './career/career.component';
-import { CommissionComponent } from './commission/commission.component';
 import { MateriaComponent } from './materia/materia.component';
 import { UsersComponent } from './users/users.component';
+import { SchedulesComponent } from './schedules/schedules.component';
 
 
 
 @NgModule({
   declarations: [
     CareerComponent,
-    CommissionComponent,
     MateriaComponent,
-    UsersComponent
+    UsersComponent,
+    SchedulesComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
     CareerComponent,
-    CommissionComponent,
     MateriaComponent
   ]
 })

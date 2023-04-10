@@ -26,6 +26,12 @@ export class LoginComponent {
 
   constructor(private api: ApiUsersService, private cookieService: CookieService, private router: Router) {}
 
+  ngOnInit() {
+    //AL INICIO DE SESION LE BORRAMOS LAS COOKIES QUE VAMOS A USAR
+    this.cookieService.delete('x-token')
+    this.cookieService.delete('MD5')
+  }
+
   //! Funcion del LOGIN
   login() {
 
