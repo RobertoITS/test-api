@@ -10,31 +10,35 @@ export class ApiUsersService {
 
   url: string = 'http://localhost:3000/api/'
 
-  private _refresh$ = new Subject<void>() //* Una subscripcion para actualizar los datos en tiempo real
+  private _refresh$ = new Subject<void>() //* Subscription, real time data refresh
 
-  get refresh$(){ //* La funcion para refrescar los datos
+  get refresh$(){ //* Data refresh
     return this._refresh$
   }
+  /*
+  TODO: Any function that edit, delete or creates a record from the database, most call the "tap" function when it returns the data
+  ? like this: return apiCall.get(direction).pipe(tap(() => { this._refresh$.next() })) ---> remember, finish whit the next() function
+  */
 
   constructor(private http: HttpClient) { }
 
-  //! PARA MANEJAR LOS BAD REQUEST
+  //! BAD REQUEST HANDLER
   handleError(error: HttpErrorResponse) {
     return throwError(() => error)
   }
 
-  //! Login service
+  //! LOGIN
   login(form: Login): Observable<any> {
     let direction: string = this.url + 'auth/login'
     return this.http.post<any>(direction, form).pipe(catchError(this.handleError))
   }
 
-  //! Get users
+  //! GET
   getUsers(): Observable<any> {
     let direction: string = this.url + 'users'
     return this.http.get<any>(direction).pipe(catchError(this.handleError))
   }
-  searchOneByParameters(value: string): Observable<any> {
+  getOneByParameters(value: string): Observable<any> {
     let direction = this.url + 'users/parameters/' + value
     return this.http.get(direction).pipe(catchError(this.handleError))
   }
@@ -43,7 +47,7 @@ export class ApiUsersService {
     return this.http.get(direction).pipe(catchError(this.handleError))
   }
 
-  //! Post one
+  //! POST
   checkUserName(username: string): Observable<any> {
     let direction = this.url + 'users/available-user-name/' + username
     return this.http.get<any>(direction).pipe(catchError(this.handleError))
@@ -57,19 +61,19 @@ export class ApiUsersService {
     return this.http.post<any>(direction, object).pipe(catchError(this.handleError), tap(() => { this._refresh$.next() }))
   }
 
-  //! Put one
+  //! PUT
   putUser(object: any, id: string): Observable<any> {
     let direction = this.url + 'users/' + id
     return this.http.put(direction, object).pipe(catchError(this.handleError), tap(() => { this._refresh$.next() }))
   }
 
-  //! Delete one
+  //! DELETE
   deleteOne(id: string): Observable<any>{
     let direction = this.url + 'users/' + id
     return this.http.delete<any>(direction).pipe(catchError(this.handleError), tap(() => { this._refresh$.next() }))
   }
 
-  //! Get teachers
+  //! GET teachers
   getTeachers(): Observable<any> {
     let direction = this.url + 'teachers/'
     return this.http.get<any>(direction).pipe(catchError(this.handleError))

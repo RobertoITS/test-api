@@ -1,6 +1,6 @@
 <div class="container mt-3">
   <div class="input-group mb-3">
-    <!--! Captura los cambios del input -->
+    <!--! Capture input changes -->
     <input #searchI (keyup)="onKey(searchI.value)" type="text" class="form-control" placeholder="Value" aria-label="Value" aria-describedby="basic-addon2">
     <div class="input-group-append">
       <button (click)="getOneByParameters()" class="btn btn-outline-secondary" type="button">Button</button>
@@ -15,7 +15,7 @@
 
 <!-- Modal View / Edit -->
 <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="editLabel">Users</h1>
@@ -78,7 +78,7 @@
 
 <!-- Modal New -->
 <div class="modal fade" id="new" tabindex="-1" aria-labelledby="newLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="newLabel">Users</h1>
@@ -94,7 +94,7 @@
               <input #nName class="form-control form-control-sm mt-3" type="text" placeholder="Name" aria-label=".form-control-sm example" >
             </div>
             <div class="row">
-              <!--! Check disponibilidad del usuario -->
+              <!--! Check availability of the user cuil -->
               <input #nCuil class="form-control form-control-sm mt-3" (focus)="resetCuil()" (focusout)="onCheckCuil(nCuil.value)" type="text" placeholder="CUIL" aria-label=".form-control-sm example"  >
               <div class="form-text text-muted" #checkedCuil>
                 Check availability
@@ -116,7 +116,7 @@
               <input #nEmail class="form-control form-control-sm mt-3" type="text" placeholder="Email" aria-label=".form-control-sm example" >
             </div>
             <div class="row">
-              <!--! Check disponibilidad del usuario -->
+              <!--! Check availability of the user name -->
               <input #nUserName class="form-control form-control-sm mt-3" (focus)="resetUser()" (focusout)="onCheckUser(nUserName.value)" type="text" placeholder="User name" aria-label=".form-control-sm example">
               <div class="form-text text-muted" #checkedUser>
                 Check availability
@@ -143,7 +143,7 @@
 </div>
 
 
-<!--Float button principal, se muestra en toda la pagina.-->
+<!-- Principal float button -->
 <div class="btn-group-fab" role="group" aria-label="FAB Menu">
   <div>
     <button data-bs-toggle="modal" data-bs-target="#new" id="float" type="button" class="btn btn-main btn-success has-tooltip" data-placement="left" title="Menu"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>

@@ -8,6 +8,7 @@ import { AuthGuard } from './middleware/guard/auth.guard';
 import { PermissionsGuard } from './middleware/guard/permissions.guard';
 import { SchedulesComponent } from './pages/schedules/schedules.component';
 import { MateriaComponent } from './pages/materia/materia.component';
+import { InscriptionsComponent } from './pages/inscriptions/inscriptions.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'career', component: CareerComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER'] } },
   { path: 'materia', component: MateriaComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER', 'TEACHER'] } },
   { path: 'schedules', component: SchedulesComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER', 'TEACHER', 'STUDENT'] } },
-  { path: 'users', component: UsersComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER'] } }
+  { path: 'users', component: UsersComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER'] } },
+  { path: 'inscriptions', component: InscriptionsComponent }
 ];
 
 @NgModule({

@@ -2,7 +2,6 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Users } from 'src/app/models/users.model';
 import { ApiUsersService } from 'src/app/services/api.users.service';
-import * as $ from 'jquery'
 
 @Component({
   selector: 'app-users',
@@ -10,28 +9,26 @@ import * as $ from 'jquery'
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent {
-  users!: any[]
-
-  //! Search
-  @ViewChild('searchI') searchI!: ElementRef<HTMLInputElement>
-
   //* Data refresh
+  // Refresh the data when it's edited
   subscription!: Subscription
 
   constructor(private api: ApiUsersService) {}
 
-  modalNew!: HTMLElement
+  modalNew!: HTMLElement// -----> Modal variable
 
-  ngAfterViewInit() { //! CONTROLAMOS EL CIERRE DEL MODAL
+  ngAfterViewInit() {
+    // Here we call the modal function to capture when it is closed
     this.modalNew = document.getElementById('new')!
     this.modalNew?.addEventListener('hidden.bs.modal', e => {
-      this.resetUser()
-      this.resetValues()
+      this.resetUser() // ----------> Reset input classes
+      this.resetValues() // ---------> Reset the input values
     })
 
+    // Get all the data
     this.getAll()
 
-    //* Refrescamos la vista:
+    // Refresh the view
     this.subscription = this.api.refresh$.subscribe(() => {
       this.api.getUsers().subscribe((data) => {
         this.users = data.result
@@ -39,63 +36,52 @@ export class UsersComponent {
     })
   }
 
+  resetValues(){
+    this.nLastName.nativeElement.value = ''
+    this.nName.nativeElement.value = ''
+    this.nCuil.nativeElement.value = ''
+    this.nDir.nativeElement.value = ''
+    this.nPhone.nativeElement.value = ''
+    this.nBirthdate.nativeElement.value = ''
+    this.nAge.nativeElement.value = ''
+    this.nEmail.nativeElement.value = ''
+    this.nUserName.nativeElement.value = ''
+    this.nPass.nativeElement.value = ''
+    this.nRole.nativeElement.value = ''
+    this.nFileNumber.nativeElement.value = ''
+  }
+
+  //* -------------------------- API METHODS -------------------------- *//
+
+  //! -------------------------- GET -------------------------- !//
+  //? VARIABLES
+  users!: any[]
+  @ViewChild('searchI') searchI!: ElementRef<HTMLInputElement> // ---------> Search input
+  //? METHODS
+  // Get all data from the database
   getAll() {
     this.api.getUsers().subscribe(data =>{
       console.log(data.result);
       this.users = data.result
     })
   }
-
+  // Get the data from one parameter (any one)
   getOneByParameters() {
-    this.api.searchOneByParameters(this.searchI.nativeElement.value).subscribe({
-      next: data => {
-        this.users = data.result
-      },
-      error: error => {
-        console.log(error);
-      }
+    this.api.getOneByParameters(this.searchI.nativeElement.value).subscribe({
+      next: data => { this.users = data.result },
+      error: error => { console.log(error) }
     })
   }
-
+  // View changes in the search input, if it's empty, then bring back all the records
   onKey(value: string) {
     if(value == '' || value == null){
       this.getAll()
     }
   }
+  //! -------------------------- GET -------------------------- !//
 
-  //! -------------------------------------------------------------------- !//
-  id = ''
-  last_name = ''
-  name = ''
-  cuil = ''
-  dir = ''
-  phone_number = ''
-  birthdate = ''
-  age = ''
-  email = ''
-  user_name = ''
-  pass = ''
-  role = ''
-  file_number = ''
-  changeValues(object: any) { //! CAMBIA LOS VALORES DE LOS INPUT
-    this.id = object.id.toString()
-    this.last_name = object.last_name
-    this.name = object.name
-    this.cuil = object.cuil
-    this.dir = object.dir
-    this.phone_number = object.phone_number
-    this.birthdate = object.birthdate
-    this.age = object.age
-    this.email = object.email
-    this.user_name = object.user_name
-    this.pass = object.pass
-    this.role = object.role
-    this.file_number = object.file_number
-  }
-  //! -------------------------------------------------------------------- !//
-
-  //! ------------------------- CREATE NEW USER ------------------------- !//
-  //! VARIABLES
+  //! -------------------------- POST -------------------------- !//
+  //? VARIABLES
         //* INPUTS
   @ViewChild('nLastName') nLastName !:ElementRef<HTMLInputElement>
   @ViewChild('nName') nName !:ElementRef<HTMLInputElement>
@@ -116,8 +102,10 @@ export class UsersComponent {
         //* AVAILABILITY MANAGEMENT
   availableUser: boolean = false
   availableCuil: boolean = false
-  //! FIRST, RESET INPUT VALUES
-  resetUser(){
+
+  //? METHODS
+  //?? FIRST
+  resetUser(){ // --------> RESET INPUT VALUES
     this.nUserName.nativeElement.classList.remove('is-invalid')
     this.nUserName.nativeElement.classList.remove('is-valid')
     this.checkedUser.nativeElement.classList.add('text-muted')
@@ -125,7 +113,7 @@ export class UsersComponent {
     this.checkedUser.nativeElement.classList.remove('valid-feedback')
     this.checkedUser.nativeElement.innerHTML = 'Check availability'
   }
-  resetCuil(){
+  resetCuil(){ // --------> RESET INPUT VALUES
     this.nCuil.nativeElement.classList.remove('is-invalid')
     this.nCuil.nativeElement.classList.remove('is-valid')
     this.checkedCuil.nativeElement.classList.add('text-muted')
@@ -133,23 +121,23 @@ export class UsersComponent {
     this.checkedCuil.nativeElement.classList.remove('valid-feedback')
     this.checkedCuil.nativeElement.innerHTML = 'Check availability'
   }
-  //! SECOND, CHECK AVAILABILITY
+
+  //?? SECOND, CHECK AVAILABILITY
   onCheckUser(value: string){ //! USER
     if(value === '' || value === null){
-      this.resetUser()
+      this.resetUser() // ------> Reset input classes
     }
     else {
       this.api.checkUserName(value).subscribe({
         next: data => {
-          console.log('Found')
-          this.isNotAvailable(this.nUserName, this.checkedUser)
+          this.isNotAvailable(this.nUserName, this.checkedUser) // ----------> If the user is in the database
           this.availableUser = false
           this.checkedUser.nativeElement.innerHTML = 'Not available'
         },
         error: error => {
           if(error.error.ok){
             console.log('Available')
-            this.isAvailable(this.nUserName, this.checkedUser)
+            this.isAvailable(this.nUserName, this.checkedUser) // ----------> If the user isn't in the database
             this.availableUser = true
           }
           else {
@@ -161,22 +149,22 @@ export class UsersComponent {
       })
     }
   }
-  onCheckCuil(value: string) {
+  onCheckCuil(value: string) { //! CUIL
     if(value === '' || value === null){
-      this.resetCuil()
+      this.resetCuil() // ------> Reset input classes
     }
     else {
       this.api.checkCuil(value).subscribe({
         next: data => {
           console.log('Found')
-          this.isNotAvailable(this.nCuil, this.checkedCuil)
+          this.isNotAvailable(this.nCuil, this.checkedCuil) // ----------> If the user is in the database
           this.availableCuil = false
           this.checkedCuil.nativeElement.innerHTML = 'Not available'
         },
         error: error => {
           if(error.error.ok){
             console.log('Available')
-            this.isAvailable(this.nCuil, this.checkedCuil)
+            this.isAvailable(this.nCuil, this.checkedCuil) // ----------> If the user isn't in the database
             this.availableCuil = true
           }
           else {
@@ -188,14 +176,14 @@ export class UsersComponent {
       })
     }
   }
-  isNotAvailable(input: ElementRef<HTMLInputElement>, div: ElementRef<HTMLElement>){
+  isNotAvailable(input: ElementRef<HTMLInputElement>, div: ElementRef<HTMLElement>){ //! CHANGE INPUT CLASSES
     input.nativeElement.classList.add('is-invalid')
     input.nativeElement.classList.remove('is-valid')
     div.nativeElement.classList.remove('text-muted')
     div.nativeElement.classList.add('invalid-feedback')
     div.nativeElement.classList.remove('valid-feedback')
   }
-  isAvailable(input: ElementRef<HTMLInputElement>, div: ElementRef<HTMLElement>){
+  isAvailable(input: ElementRef<HTMLInputElement>, div: ElementRef<HTMLElement>){ //! CHANGE INPUT CLASSES
     input.nativeElement.classList.add('is-valid')
     input.nativeElement.classList.remove('is-invalid')
     div.nativeElement.classList.remove('text-muted')
@@ -205,7 +193,7 @@ export class UsersComponent {
   }
   //! THIRD, IF AVAILABLE, THEN POST ONE
   postOne() {
-    const user: Users = { //! CREAMOS EL OBJETO
+    const user: Users = { // Create the object
       id: '',
       last_name: this.nLastName.nativeElement.value,
       name: this.nName.nativeElement.value,
@@ -221,41 +209,21 @@ export class UsersComponent {
       file_number: this.nFileNumber.nativeElement.value
     }
     if(this.availableCuil && this.availableUser) {
-      this.onCheckUser(user.user_name) //! CHEQUEAMOS NUEVAMENTE
-      this.onCheckCuil(user.cuil) //! CHEQUEAMOS NUEVAMENTE
+      this.onCheckUser(user.user_name) //! -----> Check again
+      this.onCheckCuil(user.cuil)
       if(this.availableUser && this.availableCuil){
         this.api.register(user).subscribe({
-          next: data => {
-            console.log(data.result);
-            this.nClose.nativeElement.click()
-          }
+          next: data => { this.nClose.nativeElement.click() }, // Close the modal
+          error: error => { console.log(error) } //! ----> Capture the error
         })
       }
-      else {
-        this.nClose.nativeElement.click() //! CIERRA EL MODAL
-      }
+      else { this.nClose.nativeElement.click() } // ----------> Close the modal
     }
   }
-  resetValues(){
-    this.nLastName.nativeElement.value = ''
-    this.nName.nativeElement.value = ''
-    this.nCuil.nativeElement.value = ''
-    this.nDir.nativeElement.value = ''
-    this.nPhone.nativeElement.value = ''
-    this.nBirthdate.nativeElement.value = ''
-    this.nAge.nativeElement.value = ''
-    this.nEmail.nativeElement.value = ''
-    this.nUserName.nativeElement.value = ''
-    this.nPass.nativeElement.value = ''
-    this.nRole.nativeElement.value = ''
-    this.nFileNumber.nativeElement.value = ''
-  }
-  //! ------------------------- CREATE NEW USER ------------------------- !//
+  //! -------------------------- POST -------------------------- !//
 
-
-  //! ---------------------------- EDIT USER ---------------------------- !//
-  //! VARIABLE
-        //* Inputs
+  //! -------------------------- PUT -------------------------- !//
+  //? VARIABLES
   @ViewChild('eId') eId! :ElementRef<HTMLInputElement>
   @ViewChild('eLastName') eLastName !:ElementRef<HTMLInputElement>
   @ViewChild('eName') eName !:ElementRef<HTMLInputElement>
@@ -270,9 +238,23 @@ export class UsersComponent {
   @ViewChild('eRole') eRole !:ElementRef<HTMLInputElement>
   @ViewChild('eFileNumber') eFileNumber !:ElementRef<HTMLInputElement>
   @ViewChild('eClose') eClose!: ElementRef<HTMLButtonElement>
-
+  id = ''
+  last_name = ''
+  name = ''
+  cuil = ''
+  dir = ''
+  phone_number = '' // --------------> This variables are the input fields value
+  birthdate = ''
+  age = ''
+  email = ''
+  user_name = ''
+  pass = ''
+  role = ''
+  file_number = ''
+  //? METHODS
+  // Put a record
   putOne() {
-    const user: Users = { //! CREAMOS EL OBJETO
+    const user: Users = { // Create the object
       id: this.eId.nativeElement.value,
       last_name: this.eLastName.nativeElement.value,
       name: this.eName.nativeElement.value,
@@ -288,30 +270,43 @@ export class UsersComponent {
       file_number: this.eFileNumber.nativeElement.value
     }
     this.api.putUser(user, user.id).subscribe({
-      next: data => {
-        console.log(data)
-        this.eClose.nativeElement.click()
-      },
-      error: error => {
-        console.log(error);
-
-      }
+      next: data => { this.eClose.nativeElement.click() }, // Close the modal
+      error: error => { console.log(error) } //! ----> Capture the error
     })
   }
-  //! ---------------------------- EDIT USER ---------------------------- !//
+  //! -------------------------- PUT -------------------------- !//
 
-
-  //! --------------------------- DELETE USER --------------------------- !//
+  //! -------------------------- DELETE -------------------------- !//
+  //? NO VARIABLES
+  //? METHODS
+  // Delete one record
   deleteOne() {
-    var answer = window.confirm('Delete record?')
-    if (answer) {
-      this.api.deleteOne(this.id).subscribe(data => {
-        console.log(data);
-        this.eClose.nativeElement.click()
+    var answer = window.confirm('Delete record?') // ------> Alert message
+    if (answer) { // -----> true = delete
+      this.api.deleteOne(this.id).subscribe({
+        next: data => { this.eClose.nativeElement.click() }, // ----> Closes the modal
+        error: error => { console.log(error) } //! ----> Capture the error
       })
-    } else {
-      this.eClose.nativeElement.click()
+    } else { // ------> false = return
+      this.eClose.nativeElement.click() // ----> Closes the modal
     }
   }
-  //! --------------------------- DELETE USER --------------------------- !//
+  //! -------------------------- DELETE -------------------------- !//
+
+  // Changes input values when we open a record from the list
+  changeValues(object: any) {
+    this.id = object.id.toString()
+    this.last_name = object.last_name
+    this.name = object.name
+    this.cuil = object.cuil
+    this.dir = object.dir
+    this.phone_number = object.phone_number
+    this.birthdate = object.birthdate
+    this.age = object.age
+    this.email = object.email
+    this.user_name = object.user_name
+    this.pass = object.pass
+    this.role = object.role
+    this.file_number = object.file_number
+  }
 }

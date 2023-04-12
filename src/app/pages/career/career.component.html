@@ -1,6 +1,6 @@
 <div class="container mt-3">
   <div class="input-group mb-3">
-    <!--! Captura los cambios del input -->
+    <!--! Capture input changes -->
     <input #searchI (keyup)="onKey(searchI.value)" type="text" class="form-control" placeholder="Value" aria-label="Value" aria-describedby="basic-addon2">
     <div class="input-group-append">
       <button (click)="getOneByParameters()" class="btn btn-outline-secondary" type="button">Button</button>
@@ -38,7 +38,6 @@
             </div>
           </div>
         </div>
-
       </div>
       <div class="modal-footer">
         <button #eClose type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -82,7 +81,7 @@
 </div>
 
 
-<!--Float button principal, se muestra en toda la pagina.-->
+<!-- Principal float button -->
 <div class="btn-group-fab" role="group" aria-label="FAB Menu">
   <div>
     <button data-bs-toggle="modal" data-bs-target="#new" id="float" type="button" class="btn btn-main btn-success has-tooltip" data-placement="left" title="Menu"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>

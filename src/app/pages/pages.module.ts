@@ -4,6 +4,7 @@ import { CareerComponent } from './career/career.component';
 import { MateriaComponent } from './materia/materia.component';
 import { UsersComponent } from './users/users.component';
 import { SchedulesComponent } from './schedules/schedules.component';
+import { InscriptionsComponent } from './inscriptions/inscriptions.component';
 
 
 
@@ -12,7 +13,8 @@ import { SchedulesComponent } from './schedules/schedules.component';
     CareerComponent,
     MateriaComponent,
     UsersComponent,
-    SchedulesComponent
+    SchedulesComponent,
+    InscriptionsComponent
   ],
   imports: [
     CommonModule

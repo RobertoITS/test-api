@@ -12,6 +12,7 @@ import { ApiUsersService } from 'src/app/services/api.users.service';
 })
 export class MateriaComponent {
   //* Data refresh
+  // Refresh the data when it's edited
   subscription!: Subscription
 
   constructor(
@@ -20,15 +21,16 @@ export class MateriaComponent {
       private apiMateria: ApiMateriaService
     ) {  }
 
-  modalNew!: HTMLElement
+  modalNew!: HTMLElement // -----> Modal variable
 
   ngAfterViewInit(){
+    // Here we call the modal function to capture when it is closed
     this.modalNew = document.getElementById('new')!
     this.modalNew?.addEventListener('hidden.bs.modal', e => {
-      this.resetValues()
+      this.resetValues() // ---------> Reset the input values
     })
 
-    //* Obtenemos todos los datos
+    // Get all the data
     this.getAll()
 
     //! RELATIONAL SECTION ------------------------->
@@ -36,7 +38,7 @@ export class MateriaComponent {
     this.getCareers()
     //! RELATIONAL SECTION ------------------------->
 
-    //* Refrescamos la vista:
+    // Refresh the view
     this.subscription = this.apiMateria.refresh$.subscribe(() => {
       this.apiMateria.getMaterias().subscribe({
         next: data => { this.materias = data.result },
@@ -53,51 +55,47 @@ export class MateriaComponent {
     this.nCareer.nativeElement.value = ''
   }
 
-  changeValues(object: any) {
-    this.id = object.id.toString()
-    this.name = object.name
-    this.actual_year = object.actual_year
-    this.classes_quantity = object.classes_quantity
-    //! EN LA ETIQUETA SELECT, [value]="variable", SELECCIONA LA OPCION QUE YA TIENE EL NOMBRE
-    this.career = object.career_id
-    this.professor = object.professor_id
-  }
+  //* -------------------------- API METHODS -------------------------- *//
 
-  //! ------------------ GET SECTION ------------------ !//
+  //! -------------------------- GET -------------------------- !//
+  //? VARIABLES
   materias: any[] = []
+  @ViewChild('searchI') searchI!: ElementRef<HTMLInputElement> // ---------> Search input
+  //? METHODS
+  // Get all data from the database
   getAll() {
     this.apiMateria.getMaterias().subscribe({
       next: data => { this.materias = data.result },
       error: error => { console.log(error) }
     })
   }
-
-  //! Search
-  @ViewChild('searchI') searchI!: ElementRef<HTMLInputElement>
+  // Get the data from one parameter (any one)
   getOneByParameters(){
     this.apiMateria.getOneByParameter(this.searchI.nativeElement.value).subscribe({
       next: data => {this.materias = data.result},
       error: error => { console.log(error) }
     })
   }
-  //* captura los cambios en el input
+  // View changes in the search input, if it's empty, then bring back all the records
   onKey(value: string) {
     if(value == '' || value == null){
       this.getAll()
     }
   }
-  //! ------------------ GET SECTION ------------------ !//
+  //! -------------------------- GET -------------------------- !//
 
-  //! ------------------ POST SECTION ------------------ !//
+  //! -------------------------- POST -------------------------- !//
+  //? VARIABLES
   @ViewChild('nName') nName!: ElementRef<HTMLInputElement>
   @ViewChild('nProfessor') nProfessor!: ElementRef<HTMLSelectElement>
   @ViewChild('nActualYear') nActualYear!: ElementRef<HTMLInputElement>
   @ViewChild('nClassesQuantity') nClassesQuantity!: ElementRef<HTMLInputElement>
   @ViewChild('nCareer') nCareer!: ElementRef<HTMLInputElement>
   @ViewChild('nClose') nClose!: ElementRef<HTMLButtonElement>
-
+  //? METHODS
+  // Post one new record
   postOne() {
-    const object: Materia = {
+    const object: Materia = { // Create the object (inputs values)
       id: '',
       name: this.nName.nativeElement.value,
       professor_id: +this.nProfessor.nativeElement.value,
@@ -105,23 +103,22 @@ export class MateriaComponent {
       classes_quantity: +this.nClassesQuantity.nativeElement.value,
       career_id: +this.nCareer.nativeElement.value
     }
-
     this.apiMateria.postOne(object).subscribe({
       next: data => {
-        console.log(data);
-        this.nClose.nativeElement.click()
+        this.nClose.nativeElement.click() // Close the modal
         this.nName.nativeElement.value = ''
         this.nProfessor.nativeElement.value = ''
-        this.nActualYear.nativeElement.value = ''
+        this.nActualYear.nativeElement.value = '' // ---------> Empty inputs
         this.nClassesQuantity.nativeElement.value = ''
         this.nCareer.nativeElement.value = ''
       },
-      error: error => { console.log(error) }
+      error: error => { console.log(error) }  //! ----> Capture the error
     })
   }
-  //! ------------------ POST SECTION ------------------ !//
+  //! -------------------------- POST -------------------------- !//
 
-  //! ------------------- PUT SECTION ------------------- !//
+  //! -------------------------- PUT -------------------------- !//
+  //? VARIABLES
   @ViewChild('eId') eId!: ElementRef<HTMLInputElement>
   @ViewChild('eName') eName!: ElementRef<HTMLInputElement>
   @ViewChild('eProfessor') eProfessor!: ElementRef<HTMLInputElement>
@@ -131,13 +128,14 @@ export class MateriaComponent {
   @ViewChild('eClose') eClose!: ElementRef<HTMLButtonElement>
   id: string = ''
   name: string = ''
-  professor: string =''
+  professor: string ='' // --------------> This variables are the input fields value
   actual_year: string = ''
   classes_quantity: string = ''
   career: string = ''
-
+  //? METHODS
+  // Put a record
   putOne() {
-    const materia: Materia = {
+    const materia: Materia = { // Create the object
       id: this.eId.nativeElement.value,
       name: this.eName.nativeElement.value,
       professor_id: +this.eProfessor.nativeElement.value,
@@ -146,27 +144,41 @@ export class MateriaComponent {
       career_id: +this.eCareer.nativeElement.value
     }
     this.apiMateria.putOne(materia).subscribe({
-      next: data => { this.eClose.nativeElement.click() },
-      error: error => { console.log(error) }
+      next: data => { this.eClose.nativeElement.click() }, // Close the modal
+      error: error => { console.log(error) } //! ----> Capture the error
     })
   }
-  //! ------------------- PUT SECTION ------------------- !//
+  //! -------------------------- PUT -------------------------- !//
 
-  //! ------------------ DELETE SECTION ------------------ !//
+  //! -------------------------- DELETE -------------------------- !//
+  //? NO VARIABLES
+  //? METHODS
+  // Delete one record
   deleteOne() {
-    var answer = window.confirm('Delete record?')
-    if (answer) {
+    var answer = window.confirm('Delete record?') // ------> Alert message
+    if (answer) { // -----> true = delete
       this.apiMateria.deleteOne(this.id).subscribe({
-        next: data => { this.eClose.nativeElement.click() },
-        error: error => { console.log(error) }
+        next: data => { this.eClose.nativeElement.click() }, // ----> Closes the modal
+        error: error => { console.log(error) } //! ----> Capture the error
       })
-    } else {
-      this.eClose.nativeElement.click()
+    } else { // ------> false = return
+      this.eClose.nativeElement.click() // ----> Closes the modal
     }
   }
-  //! ------------------ DELETE SECTION ------------------ !//
+  //! -------------------------- DELETE -------------------------- !//
 
-  //! --------------- RELATIONAL SECTION --------------- !//
+  // Changes input values when we open a record from the list
+  changeValues(object: any) {
+    this.id = object.id.toString()
+    this.name = object.name
+    this.actual_year = object.actual_year
+    this.classes_quantity = object.classes_quantity
+    //! IN SELECT TAG, [value]="variable", SELECT THE VALUE ID
+    this.career = object.career_id
+    this.professor = object.professor_id
+  }
+
+  //! -------------------- RELATIONAL SECTION -------------------- !//
     //! TEACHERS
   teachers: any[] = []
   getTeachers(){
@@ -184,5 +196,5 @@ export class MateriaComponent {
       error: error => { console.log(error) }
     })
   }
-  //! --------------- RELATIONAL SECTION --------------- !//
+  //! -------------------- RELATIONAL SECTION -------------------- !//
 }
