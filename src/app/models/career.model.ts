@@ -1,6 +1,6 @@
 export interface Career {
   id: string,
-  name: string,
+  career_name: string,
   description: string,
   duration: string
 }

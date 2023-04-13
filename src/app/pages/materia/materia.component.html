@@ -9,7 +9,7 @@
 </div>
 <div class="container mt-5">
   <div class="list-group" >
-    <a (click)="changeValues(materia)" *ngFor="let materia of materias" data-bs-toggle="modal" data-bs-target="#edit" class="list-group-item list-group-item-action" aria-current="true">{{materia.name}}</a>
+    <a (click)="changeValues(materia)" *ngFor="let materia of materias" data-bs-toggle="modal" data-bs-target="#edit" class="list-group-item list-group-item-action" aria-current="true">{{materia.materia_name}}</a>
   </div>
 </div>
 
@@ -43,7 +43,7 @@
             </div>
             <div class="row">
               <select #eCareer class="form-select form-select-sm mt-3" id="e_career" [value]="career">
-                <option *ngFor="let career of careers" value="{{career.id}}">{{career.name}}</option>
+                <option *ngFor="let career of careers" value="{{career.id}}">{{career.career_name}}</option>
               </select>
             </div>
           </div>
@@ -88,7 +88,7 @@
             <div class="row">
               <select #nCareer class="form-select form-select-sm mt-3" id="career">
                 <option selected value="">Career...</option>
-                <option *ngFor="let career of careers" value="{{career.id}}">{{career.name}}</option>
+                <option *ngFor="let career of careers" value="{{career.id}}">{{career.career_name}}</option>
               </select>
             </div>
           </div>

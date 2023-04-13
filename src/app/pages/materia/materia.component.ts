@@ -97,7 +97,7 @@ export class MateriaComponent {
   postOne() {
     const object: Materia = { // Create the object (inputs values)
       id: '',
-      name: this.nName.nativeElement.value,
+      materia_name: this.nName.nativeElement.value,
       professor_id: +this.nProfessor.nativeElement.value,
       actual_year: this.nActualYear.nativeElement.value,
       classes_quantity: +this.nClassesQuantity.nativeElement.value,
@@ -137,7 +137,7 @@ export class MateriaComponent {
   putOne() {
     const materia: Materia = { // Create the object
       id: this.eId.nativeElement.value,
-      name: this.eName.nativeElement.value,
+      materia_name: this.eName.nativeElement.value,
       professor_id: +this.eProfessor.nativeElement.value,
       actual_year: this.eActualYear.nativeElement.value,
       classes_quantity: +this.eClassesQuantity.nativeElement.value,
@@ -170,7 +170,7 @@ export class MateriaComponent {
   // Changes input values when we open a record from the list
   changeValues(object: any) {
     this.id = object.id.toString()
-    this.name = object.name
+    this.name = object.materia_name
     this.actual_year = object.actual_year
     this.classes_quantity = object.classes_quantity
     //! IN SELECT TAG, [value]="variable", SELECT THE VALUE ID

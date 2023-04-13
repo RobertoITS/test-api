@@ -65,7 +65,7 @@ export class CareerComponent {
   postOne() {
     const object: Career = { // Create the object (inputs values)
       id: '',
-      name: this.nName.nativeElement.value,
+      career_name: this.nName.nativeElement.value,
       description: this.nDescription.nativeElement.value,
       duration: this.nDuration.nativeElement.value
     }
@@ -97,7 +97,7 @@ export class CareerComponent {
   putOne() {
     const career: Career = { // Create the object
       id: this.eId.nativeElement.value,
-      name: this.eName.nativeElement.value,
+      career_name: this.eName.nativeElement.value,
       description: this.eDescription.nativeElement.value,
       duration: this.eDuration.nativeElement.value
     }
@@ -129,7 +129,7 @@ export class CareerComponent {
   // Changes input values when we open a record from the list
   changeValues(object: any) {
     this.id = object.id.toString()
-    this.name = object.name
+    this.name = object.career_name
     this.description = object.description
     this.duration = object.duration
   }
