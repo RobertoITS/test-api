@@ -25,6 +25,14 @@ export class CareerComponent {
         this.careers = data.result
       })
     })
+    const today = new Date()//! OBTENER LA FECHA
+        const yyyy = today.getFullYear()
+        let mm = (today.getMonth() + 1).toString()
+        let dd = today.getDate().toString()
+        if(dd.length < 2) dd = '0' + dd
+        if(mm.length < 2) mm = '0' + mm
+        const formattedDate = `${dd}/${mm}/${yyyy}`
+        console.log(formattedDate);
   }
 
   //* -------------------------- API METHODS -------------------------- *//
@@ -71,6 +79,8 @@ export class CareerComponent {
     }
     this.api.postCareer(object).subscribe({
       next: data => {
+        console.log(data.result.insertId)
+
         this.nClose.nativeElement.click() // Close the modal
         this.nName.nativeElement.value = ''
         this.nDescription.nativeElement.value = '' // ---------> Empty inputs

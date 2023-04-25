@@ -5,6 +5,8 @@ import { MateriaComponent } from './materia/materia.component';
 import { UsersComponent } from './users/users.component';
 import { SchedulesComponent } from './schedules/schedules.component';
 import { InscriptionsComponent } from './inscriptions/inscriptions.component';
+import { AttendancesComponent } from './attendances/attendances.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 
 
@@ -14,10 +16,12 @@ import { InscriptionsComponent } from './inscriptions/inscriptions.component';
     MateriaComponent,
     UsersComponent,
     SchedulesComponent,
-    InscriptionsComponent
+    InscriptionsComponent,
+    AttendancesComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    QRCodeModule
   ],
   exports: [
     CareerComponent,

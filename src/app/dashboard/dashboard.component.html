@@ -12,9 +12,13 @@
     <div class="row">
       <button type="button" *appRolePermissions="['ADMIN', 'SUSER']" [routerLink]="'/users'" class="btn btn-primary mt-4">Users</button>
     </div>
+    <div class="row">
+      <button type="button" *appRolePermissions="['ADMIN', 'SUSER']" [routerLink]="'/attendances'" class="btn btn-primary mt-4">Attendances</button>
+    </div>
   </div>
 </div>
 
+<qrcode [width]="256" [qrdata]="'asd'"></qrcode>
 <!-- Modal User Data -->
 <div class="modal fade" id="userdata" tabindex="-1" aria-labelledby="newLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-lg">

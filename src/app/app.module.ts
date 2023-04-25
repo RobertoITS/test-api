@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { PagesModule } from './pages/pages.module';
 import { RolePermissionsDirective } from './middleware/directive/role.permissions.directive';
 import { JwtInterceptor } from './middleware/interceptors/jwt.interceptor';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { JwtInterceptor } from './middleware/interceptors/jwt.interceptor';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    PagesModule
+    PagesModule,
+    QRCodeModule
   ],
   providers: [
     CookieService, //* See ngx-cookie-service dependence

@@ -9,6 +9,7 @@ import { PermissionsGuard } from './middleware/guard/permissions.guard';
 import { SchedulesComponent } from './pages/schedules/schedules.component';
 import { MateriaComponent } from './pages/materia/materia.component';
 import { InscriptionsComponent } from './pages/inscriptions/inscriptions.component';
+import { AttendancesComponent } from './pages/attendances/attendances.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'materia', component: MateriaComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER', 'TEACHER'] } },
   { path: 'schedules', component: SchedulesComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER', 'TEACHER', 'STUDENT'] } },
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard, PermissionsGuard], data: { role: ['ADMIN', 'SUSER'] } },
-  { path: 'inscriptions', component: InscriptionsComponent }
+  { path: 'inscriptions', component: InscriptionsComponent },
+  { path: 'attendances', component: AttendancesComponent }
 ];
 
 @NgModule({
